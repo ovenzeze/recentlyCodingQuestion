@@ -1,0 +1,21 @@
+body {
+  height: 2000px;
+}
+body .twice {
+  position: absolute;
+  top: 10px;
+  width: 100px;
+  height: 100px;
+  background-color: #90ee90;
+  text-align: center;
+  left: 50%;
+}
+body .three-times {
+  position: absolute;
+  top: 150px;
+  width: 100px;
+  height: 100px;
+  background-color: #add8e6;
+  text-align: center;
+  left: 50%;
+}
