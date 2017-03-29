@@ -10,53 +10,55 @@
 //      3 响应头已收到，响应体还未收到
 //      status为返回的状态码 200 表示OK 其他情况是失败 301 永久重定向 302 临时重定向
 //      304 使用缓存
-let myAjax = (url, options) => {
-    let ajax = null,
-        param, data, type;
-    // 创建XML对象
-    if (window.XMLHttpRequest) {
-        ajax = new XMLHttpRequest();
-    } else {
-        ajax = new activeXObject('Microsoft.XMLHTTP');
-    }
-    // 处理要发送的数据
-    param = '';
-    data = options.data ? options.data : -1;
-    if (typeof data === "object") {
-        for (let key in data) {
-            param += `${key}=${data[key]}&`;
-        }
-        param = param.replace(/&$/, '');
-    } else {
-        param = `${data}timestamp${new Date().getTime()}`;
-    }
-    // 处理数据完成
-    // 发送请求
-    type = options.type ? options.type.toUpperCase() : "GET";
-    if (type == "GET") {
-        ajax.open("GET", `${url}?${param}`, true);
-        ajax.send();
-    } else {
-        ajax.open("POST", url, true);
-        ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        ajax.send(param);
-    }
-    // 请求发送完成
-    // 处理结果 onReadyStateChange事件
-    ajax.onreadystatechange = () => {
-        if (ajax.readyState === 4) {
-          if(ajax.status === 200) {
-            options.onsuccess(ajax.responseText,ajax);
-          } else {
-            if (options.onfail) {
-                options.onfail(ajax);
-            }
-        }
-    }
-  };
-  // 结果处理完成
-  return ajax;
-}
+// let myAjax = (url, options) => {
+//     let ajax = null,
+//         param,
+//         data,
+//         type;
+//     // 创建XML对象
+//     if (window.XMLHttpRequest) {
+//         ajax = new XMLHttpRequest();
+//     } else {
+//         ajax = new activeXObject('Microsoft.XMLHTTP');
+//     }
+//     // 处理要发送的数据
+//     param = '';
+//     data = options.data ? options.data : -1;
+//     if (typeof data === "object") {
+//         for (let key in data) {
+//             param += `${key}=${data[key]}&`;
+//         }
+//         param = param.replace(/&$/, '');
+//     } else {
+//         param = `${data}timestamp${new Date().getTime()}`;
+//     }
+//     // 处理数据完成
+//     // 发送请求
+//     type = options.type ? options.type.toUpperCase() : "GET";
+//     if (type == "GET") {
+//         ajax.open("GET", `${url}?${param}`, true);
+//         ajax.send();
+//     } else {
+//         ajax.open("POST", url, true);
+//         ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//         ajax.send(param);
+//     }
+//     // 请求发送完成
+//     // 处理结果 onReadyStateChange事件
+//     ajax.onreadystatechange = () => {
+//         if (ajax.readyState === 4) {
+//           if(ajax.status === 200) {
+//             options.onsuccess(ajax.responseText,ajax);
+//           } else {
+//             if (options.onfail) {
+//                 options.onfail(ajax);
+//             }
+//         }
+//     }
+//   };
+//   // 结果处理完成
+//   return ajax;
+// }
 // 函数结束
 let options1 = {
   type: "GET",
@@ -104,4 +106,52 @@ let options2 = {
 };
 
 // myAjax('http://123.206.204.163:2333/exam/studentManage/',options1);
+// myAjax('http://123.206.204.163:2333/exam/login/',options2);
+let myAjax = (url,options) => {
+  let ajax,
+      data,
+      param = "",
+      type;
+  // create XML object
+  if(window.XMLHttpRequest) {
+    ajax = new XMLHttpRequest();
+  }else {
+    ajax = new activeXObject("Microsoft.XMLHTTP");
+  }
+  // parse data
+  data = options.data ? options.data : -1;
+  if(typeof data == "object") {
+    for(let key in data) {
+      param += `${key}=${data[key]}&`;
+    }
+  }else {
+    param = `${data}?timeStamp=${new Date().getTime()}`;
+  }
+  param = param.replace(/&$/,"");
+  console.log(param);
+  //send request
+  type = options.type ? options.type.toUpperCase() : "GET";
+  if(type == "GET") {
+    ajax.open("GET",`${url}?${param}`,true);
+    ajax.send();
+  }else {
+    ajax.open("POST",url,true);
+    // ajax.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    ajax.send(param);
+  }
+  //solve result
+  ajax.onreadystatechange = ()  => {
+    if(ajax.readyState === 4) {
+      if(ajax.status === 200) {
+        options.onsuccess(ajax.responseText,ajax);
+      }else {
+        if(options.onfail) {
+          options.onfail(ajax);
+        }
+      }
+    }
+  };
+  return ajax;
+}
 myAjax('http://123.206.204.163:2333/exam/login/',options2);

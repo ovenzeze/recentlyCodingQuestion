@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -14,55 +14,55 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //      3 响应头已收到，响应体还未收到
 //      status为返回的状态码 200 表示OK 其他情况是失败 301 永久重定向 302 临时重定向
 //      304 使用缓存
-var myAjax = function myAjax(url, options) {
-  var ajax = null,
-      param = void 0,
-      data = void 0,
-      type = void 0;
-  // 创建XML对象
-  if (window.XMLHttpRequest) {
-    ajax = new XMLHttpRequest();
-  } else {
-    ajax = new activeXObject('Microsoft.XMLHTTP');
-  }
-  // 处理要发送的数据
-  param = '';
-  data = options.data ? options.data : -1;
-  if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === "object") {
-    for (var key in data) {
-      param += key + '=' + data[key] + '&';
-    }
-    param = param.replace(/&$/, '');
-  } else {
-    param = data + 'timestamp' + new Date().getTime();
-  }
-  // 处理数据完成
-  // 发送请求
-  type = options.type ? options.type.toUpperCase() : "GET";
-  if (type == "GET") {
-    ajax.open("GET", url + '?' + param, true);
-    ajax.send();
-  } else {
-    ajax.open("POST", url, true);
-    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    ajax.send(param);
-  }
-  // 请求发送完成
-  // 处理结果 onReadyStateChange事件
-  ajax.onreadystatechange = function () {
-    if (ajax.readyState === 4) {
-      if (ajax.status === 200) {
-        options.onsuccess(ajax.responseText, ajax);
-      } else {
-        if (options.onfail) {
-          options.onfail(ajax);
-        }
-      }
-    }
-  };
-  // 结果处理完成
-  return ajax;
-};
+// let myAjax = (url, options) => {
+//     let ajax = null,
+//         param,
+//         data,
+//         type;
+//     // 创建XML对象
+//     if (window.XMLHttpRequest) {
+//         ajax = new XMLHttpRequest();
+//     } else {
+//         ajax = new activeXObject('Microsoft.XMLHTTP');
+//     }
+//     // 处理要发送的数据
+//     param = '';
+//     data = options.data ? options.data : -1;
+//     if (typeof data === "object") {
+//         for (let key in data) {
+//             param += `${key}=${data[key]}&`;
+//         }
+//         param = param.replace(/&$/, '');
+//     } else {
+//         param = `${data}timestamp${new Date().getTime()}`;
+//     }
+//     // 处理数据完成
+//     // 发送请求
+//     type = options.type ? options.type.toUpperCase() : "GET";
+//     if (type == "GET") {
+//         ajax.open("GET", `${url}?${param}`, true);
+//         ajax.send();
+//     } else {
+//         ajax.open("POST", url, true);
+//         ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//         ajax.send(param);
+//     }
+//     // 请求发送完成
+//     // 处理结果 onReadyStateChange事件
+//     ajax.onreadystatechange = () => {
+//         if (ajax.readyState === 4) {
+//           if(ajax.status === 200) {
+//             options.onsuccess(ajax.responseText,ajax);
+//           } else {
+//             if (options.onfail) {
+//                 options.onfail(ajax);
+//             }
+//         }
+//     }
+//   };
+//   // 结果处理完成
+//   return ajax;
+// }
 // 函数结束
 var options1 = {
   type: "GET",
@@ -71,7 +71,7 @@ var options1 = {
     var showResult = function showResult(result) {
       for (var key in result) {
         if (_typeof(result[key]) != "object") {
-          console.log(key + ':' + result[key]);
+          console.log(key + ":" + result[key]);
         } else {
           console.log('---分割线----');
           showResult(result[key]);
@@ -81,7 +81,7 @@ var options1 = {
     showResult(JSON.parse(result));
   },
   onfail: function onfail(ajax) {
-    console.log('some mistakes happened in connect to ' + ajax.responseURL);
+    console.log("some mistakes happened in connect to " + ajax.responseURL);
   }
 };
 var options2 = {
@@ -95,7 +95,7 @@ var options2 = {
       console.log("POST");
       for (var key in result) {
         if (_typeof(result[key]) != "object") {
-          console.log(key + ':' + result[key]);
+          console.log(key + ":" + result[key]);
         } else {
           console.log('---分割线----');
           showResult(result[key]);
@@ -105,9 +105,57 @@ var options2 = {
     showResult(JSON.parse(result));
   },
   onfail: function onfail(ajax) {
-    console.log('some mistakes happened in connect to ' + ajax.responseURL);
+    console.log("some mistakes happened in connect to " + ajax.responseURL);
   }
 };
 
 // myAjax('http://123.206.204.163:2333/exam/studentManage/',options1);
+// myAjax('http://123.206.204.163:2333/exam/login/',options2);
+var myAjax = function myAjax(url, options) {
+  var ajax = void 0,
+      data = void 0,
+      param = "",
+      type = void 0;
+  // create XML object
+  if (window.XMLHttpRequest) {
+    ajax = new XMLHttpRequest();
+  } else {
+    ajax = new activeXObject("Microsoft.XMLHTTP");
+  }
+  // parse data
+  data = options.data ? options.data : -1;
+  if ((typeof data === "undefined" ? "undefined" : _typeof(data)) == "object") {
+    for (var key in data) {
+      param += key + "=" + data[key] + "&";
+    }
+  } else {
+    param = data + "?timeStamp=" + new Date().getTime();
+  }
+  param = param.replace(/&$/, "");
+  console.log(param);
+  //send request
+  type = options.type ? options.type.toUpperCase() : "GET";
+  if (type == "GET") {
+    ajax.open("GET", url + "?" + param, true);
+    ajax.send();
+  } else {
+    ajax.open("POST", url, true);
+    // ajax.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    ajax.send(param);
+  }
+  //solve result
+  ajax.onreadystatechange = function () {
+    if (ajax.readyState === 4) {
+      if (ajax.status === 200) {
+        options.onsuccess(ajax.responseText, ajax);
+      } else {
+        if (options.onfail) {
+          options.onfail(ajax);
+        }
+      }
+    }
+  };
+  return ajax;
+};
 myAjax('http://123.206.204.163:2333/exam/login/', options2);

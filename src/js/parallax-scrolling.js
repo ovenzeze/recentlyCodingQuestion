@@ -16,17 +16,15 @@ if(document.addEventListener){
 let parallaxScrolling = () => {
   let scrollElement;
   if(!scrollElement) {
-    if(document.body.scrollTop){
       scrollElement = document.body;
     }else {
       scrollElement = document.documentElement;
     }
-  }
   twiceBox.style.top = twiceBoxHeight + 2 * scrollElement.scrollTop + "px";
   threeTimesBox.style.top = threeTimesBoxHeight + 3 * scrollElement.scrollTop + "px";
   if(twiceBox.offsetTop > 1000){
     twiceBox.style.top = twiceBoxHeight + "px";
-    window.scrollTo(0,0);;
+    window.scrollTo(0,0);
   }
-};
+}
 // scroll function end
