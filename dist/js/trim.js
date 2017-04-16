@@ -4,7 +4,7 @@
 //默认去掉字符串首尾空格，当传入参数options为true时，去掉字符串中所有空格
 var myTrim = function myTrim(str, options) {
   if (typeof str != "string") {
-    return str + " is not a String";
+    return str + " is  not a String";
   }
   var reg1 = new RegExp(" +", "g");
   var reg2 = new RegExp("^( +)|( +)$", "g");
